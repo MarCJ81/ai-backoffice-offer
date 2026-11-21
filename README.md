@@ -3,9 +3,8 @@
 사장님·1인 대표에게 **월 단위 백오피스 대행**을 팔기 위한 영업용 랜딩 페이지입니다.
 카톡·문자로 링크 하나만 보내면 30초 안에 "직원 뽑는 것보다 낫다"가 계산되는 구성입니다.
 
-- 라이브: `https://marcj81.github.io/ai-backoffice-offer/`
+- 라이브: `https://marcj81.github.io/ai-backoffice-offer/` (GitHub Pages, `gh-pages` 브랜치 서빙)
 - 서버 없음 · 빌드 없음 · 정적 파일만. 모든 계산은 브라우저에서 돈다.
-- GitHub Pages(`gh-pages`)에 정적 파일 그대로 배포되어 있습니다. 빌드 과정 없음.
 
 ---
 
@@ -14,7 +13,7 @@
 | 파일 | 역할 |
 |---|---|
 | `index.html` | 랜딩 페이지 전체(히어로·계산기·3단계·결과물·요금제·신청서·FAQ) |
-| `styles.css` | `design-ref-engine.js`의 `cream-editorial` 토큰 기반 스타일 |
+| `styles.css` | A안 `crisp-bento` 토큰 기반 스타일(순백 카드 · 1px 보더 · 16px 라운드 · 코발트 단일 액센트) |
 | `core.js` | 비교 계산·신청서 검증·문안 생성 (UMD, node/브라우저 공용) |
 | `app.js` | DOM 조립, 계산기 반응, 폼 오류 표시, 복사 |
 | `test.js` | 계산·검증·문안 + 페이지 내용·파일 위생 검사 (DOM 없이) |
@@ -23,17 +22,19 @@
 | `favicon.svg` · `robots.txt` · `sitemap.xml` · `.nojekyll` | GitHub Pages 필수 파일 |
 | `assets/fonts/` | 로컬 폰트(외부 요청 0) |
 
-## 2. 디자인
+## 2. 디자인 — A안 Crisp Bento
 
-- 색·타이포: `packages/design-ref-engine.js` 의 `cream-editorial` 프리셋
-  (`#F3EADD` 배경 · `#FFFCF6` 카드 · `#33281E` 본문 · `#A8431F` 강조 · `#F6E3D6` 강조 배경)
-- 폰트: 전부 로컬.
-  - 본문·UI — IBM Plex Sans KR (`plexkr-*.woff2`, `apps/review-reply-studio/assets/fonts/` 재사용)
-  - 제목 — Noto Serif CJK KR Regular를 **이 페이지에 쓰인 글자만 서브셋**해 `offer-serif-regular.woff2`(67KB)로 동봉.
-    라이선스는 같은 폴더의 `OFL-NotoSerifCJK.txt`. 서브셋에 없는 글자는 다른 세리프로 대체되므로,
-    **제목 문구를 새로 추가하면 폰트를 다시 서브셋해야 합니다**(아래 6번).
-  - 세리프는 Regular 한 굵기만 넣었습니다. 굵은 세리프를 요청하면 브라우저가 가짜 굵기를 만들기 때문에,
-    `h1~h4`·가격·큰 숫자는 모두 `font-weight:400`으로 두고 크기와 자간으로 위계를 만들었습니다.
+- 색·타이포: `reports/pinterest-ui-trend-research-2026.md` 의 A안(화이트 벤토) 토큰.
+  `#FAFAFA` 배경 · `#FFFFFF` 카드 · `#0C0D0F` 잉크 · `#5C6167` 보조 · `#E7E8EA` 1px 보더 ·
+  `#2F5BFF` 단일 액센트(보조 `#EEF2FF`) · 카드 16px / 버튼 12px / 필드 10px / 태그 6px 라운드
+- 타이포: 전부 산세리프 **IBM Plex Sans KR**(로컬 `plexkr-*.woff2`). 헤드라인은 800, 자간 `-.045em`.
+  세리프는 쓰지 않습니다(A안 규칙). `offer-serif-regular.woff2` 는 이전 시안 자산으로 남아 있지만
+  어떤 규칙에서도 참조하지 않으므로 **내려받지 않습니다**(외부·불필요 요청 0).
+- 대비: 본문 텍스트 4.5:1 이상을 기준으로 토큰을 골랐고, `test.js` 가 토큰 조합 18쌍을
+  WCAG 2.2 공식으로 계산해 검사합니다. `uitest.py` 는 화면에 보이는 **모든 텍스트**를
+  실제 계산색으로 훑어 4.5:1(큰 글씨 3:1) 미달이 하나라도 있으면 실패합니다.
+- 레이아웃: 벤토. 히어로(카피 + 계산기 큰 타일) → 지표 4칸 → 대신하는 일 2×2 → 3단계 3칸 →
+  결과물(대표 1칸 + 3칸) → 요금제 3칸 → 신청(설명 + 폼) → FAQ. 980px 이하 1열, 390px 가로 넘침 0.
 
 ## 3. 로컬에서 보기 / 테스트
 
@@ -52,6 +53,7 @@ LD_LIBRARY_PATH=/workspace/scratch/chromelibs:/workspace/scratch/calc/libs pytho
 - 계산기: 급여·대행사비·요금제 변경 시 금액·막대 갱신, 0원/이상값에서도 안 깨짐
 - 신청서: 동의 전 제출 → 오류, 필수값 누락 → 해당 칸 오류와 포커스, 정상 입력 → 문안 생성
 - 복사 버튼 → 클립보드에 문안, 입력값이 localStorage에 남지 않음
+- A안 토큰(배경·라운드·1px 보더·800 헤드라인·코발트)과 화면 텍스트 전수 대비
 - `preview-desktop.png` · `preview-mobile.png` 저장
 
 을 확인합니다.
@@ -82,25 +84,11 @@ LD_LIBRARY_PATH=/workspace/scratch/chromelibs:/workspace/scratch/calc/libs pytho
   상호·대표자·사업자번호·개인정보 보호책임자·연락처를 넣어야 법정 기재사항이 채워집니다.
 - 소개 페이지 링크는 공개 URL이므로, 링크를 받은 누구나 열람할 수 있습니다. 링크에 개인 정보를 붙여 보내지 마세요.
 
-## 6. 제목 문구를 고칠 때 (세리프 서브셋 재생성)
+## 6. 제목 문구를 고칠 때
 
-```bash
-cd apps/ai-backoffice-offer
-python3 - <<'PY'
-chars = set()
-for f in ('index.html', 'privacy.html'):
-    chars |= set(open(f, encoding='utf-8').read())
-chars |= set(' 만원억천백0123456789,.-~%()[]{}·↗→←✓−‘’“”…')
-chars.discard('\n'); chars.discard('\r')
-open('/tmp/offer-chars.txt', 'w', encoding='utf-8').write(''.join(sorted(chars)))
-PY
-pyftsubset /usr/share/fonts/pickle-hwp/NotoSerifCJKkr-Regular.otf \
-  --text-file=/tmp/offer-chars.txt --flavor=woff2 \
-  --output-file=assets/fonts/offer-serif-regular.woff2 \
-  --layout-features='kern,liga,clig,calt' --no-hinting --desubroutinize
-```
-
-계산기 결과처럼 **스크립트가 세리프로 찍는 글자**(숫자·쉼표·`만`·`원`)는 위 문자 집합에 반드시 포함되어야 합니다.
+세리프 서브셋을 쓰지 않으므로 **폰트 재생성은 필요 없습니다.** IBM Plex Sans KR 전체 글리프가
+`assets/fonts/plexkr-*.woff2` 에 들어 있어 문구를 새로 써도 그대로 나옵니다.
+(이전 시안의 `offer-serif-regular.woff2`·`OFL-NotoSerifCJK.txt` 는 참조하지 않는 자산입니다.)
 
 ## 7. 배포 (승인 후)
 
