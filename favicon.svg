@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="원탭 백오피스">
-  <rect width="64" height="64" rx="12" fill="#F3EADD"/>
-  <rect x="8.5" y="8.5" width="47" height="47" rx="5" fill="#FFFCF6" stroke="#A8431F" stroke-width="2"/>
-  <path d="M18 23h28M18 32h16M18 41h28" stroke="#33281E" stroke-width="2.6" stroke-linecap="round"/>
-  <circle cx="45" cy="32" r="4.6" fill="none" stroke="#A8431F" stroke-width="2.2"/>
+  <rect width="64" height="64" rx="14" fill="#0C0D0F"/>
+  <path d="M17 22h30M17 32h17M17 42h30" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="45" cy="32" r="5.2" fill="none" stroke="#A8BAFF" stroke-width="2.6"/>
 </svg>
