@@ -72,7 +72,7 @@ LD_LIBRARY_PATH=/workspace/scratch/chromelibs:/workspace/scratch/calc/libs pytho
 
 | 옵션 | 금액 | 내용 |
 |---|---|---|
-| 사내 AI 팀 회의실 포털 구축 (`teamroom`) | 구축 1회 990,000원 · 월 유지비 0원 | 기획·마케팅·CS·검수 봇 1방 통합, Cloudflare Workers 무료 티어 배포, 구축 5영업일 |
+| 사내 AI 팀 회의실 포털 구축 (`teamroom`) | 구축 1회 990,000원 · 월 유지비 0원 | 기획·마케팅·CS·검수 기본 봇 4개, 업종에 맞춰 개발·디자인·영상·홍보·재무·영업 등 부서(방) 무제한 구성, Cloudflare Workers 무료 티어 배포, 구축 5영업일 |
 
 - 구축비 990,000원과 “월 유지비 0원”은 `core.js` 의 `ADDONS[0].price`·`monthly` 한 곳에서만 고칩니다.
   페이지 문구(99만 원)는 손으로 쓴 값이므로 함께 바꿔야 `test.js` 가 통과합니다.
