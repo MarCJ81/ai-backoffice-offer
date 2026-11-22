@@ -83,6 +83,39 @@
     }
   ];
 
+  /* ── 추가 옵션 ─────────────────────────────────────────
+     요금제 위에 하나만 얹는 별도 구축 상품. price 는 부가세 포함 1회 구축비,
+     monthly 는 서버·호스팅 유지비다(Cloudflare Workers 무료 티어 = 0원).
+     무료 티어 한도는 공식 문서 기준 일 10만 요청 · 요청당 CPU 10ms. */
+  var ADDONS = [
+    {
+      id: 'teamroom',
+      name: '사내 AI 팀 회의실 포털 구축',
+      headline: '기획·마케팅·CS·검수 봇 1방 통합 · Cloudflare 무료 티어',
+      price: 990000,
+      monthly: 0,
+      buildDays: 5,
+      freeQuotaPerDay: 100000,
+      bots: [
+        { role: '기획', does: '이번 주 무엇부터 할지 순서를 잡습니다' },
+        { role: '마케팅', does: '채널별 문구·콘텐츠 초안을 씁니다' },
+        { role: 'CS', does: '문의 답변 초안을 사장님 말투로 만듭니다' },
+        { role: '검수', does: '법규·오탈자·톤을 보고 걸리는 문장을 지웁니다' }
+      ],
+      forWhom: '직원이 다섯 명을 넘고, 같은 질문이 세 번씩 반복되는 회사',
+      includes: [
+        '한 방에 네 봇 (기획·마케팅·CS·검수) — 대표가 한 줄 던지면 담당 봇이 이어받습니다',
+        '사내 전용 주소 — 초대 링크와 비밀번호로만 열리고 검색에 노출되지 않습니다',
+        'Cloudflare 무료 티어 배포 — 서버·호스팅 월 0원 (일 10만 요청까지 무료)',
+        '이미 쓰는 AI 구독·API 키를 연결 — AI 정액료를 새로 내지 않습니다',
+        '대화 기록은 회사 저장소에 남기고 모델 학습에 넘기지 않습니다',
+        '구축 5영업일, 사용법 30분 화상 1회, 첫 달 무상 수정'
+      ],
+      sampleId: 'teamroom',
+      sampleLabel: '사내 AI 팀 회의실 구성안 1장'
+    }
+  ];
+
   var INDUSTRIES = [
     { id: 'food', label: '식당·카페', hint: '리뷰 답글 3개 + 카드뉴스 4장 구성안' },
     { id: 'clinic', label: '동네 병원·의원', hint: '리뷰 답글 3개 (의료법 검수 포함)' },
@@ -97,7 +130,8 @@
     { id: 'blog', label: '블로그 원고 1편' },
     { id: 'cardnews', label: '카드뉴스 4장 구성안' },
     { id: 'estimate', label: '견적서 1건' },
-    { id: 'linkpage', label: '원탭 링크 페이지 1장' }
+    { id: 'linkpage', label: '원탭 링크 페이지 1장' },
+    { id: 'teamroom', label: '사내 AI 팀 회의실 구성안 1장' }
   ];
 
   /* 실제로 배포되어 돌아가는 페이지. 소개 페이지의 "이 수준의 결과물" 증거. */
@@ -184,6 +218,10 @@
   }
   function toolById(id) {
     for (var i = 0; i < TOOLS.length; i++) if (TOOLS[i].id === id) return TOOLS[i];
+    return null;
+  }
+  function addonById(id) {
+    for (var i = 0; i < ADDONS.length; i++) if (ADDONS[i].id === id) return ADDONS[i];
     return null;
   }
 
@@ -328,11 +366,13 @@
     VERSION: VERSION,
     BURDEN: BURDEN,
     PLANS: PLANS,
+    ADDONS: ADDONS,
     INDUSTRIES: INDUSTRIES,
     SAMPLE_TYPES: SAMPLE_TYPES,
     TOOLS: TOOLS,
     FIELD_LABEL: FIELD_LABEL,
     planById: planById,
+    addonById: addonById,
     industryById: industryById,
     sampleById: sampleById,
     toolById: toolById,

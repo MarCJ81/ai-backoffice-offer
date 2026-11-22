@@ -567,6 +567,57 @@ input::placeholder, textarea::placeholder { color: var(--sub); opacity: 1; }
 .plan-cta { width: 100%; margin-top: auto; }
 .plan-note { margin: 18px 0 0; font-size: 12px; line-height: 1.7; color: var(--sub); max-width: 66em; }
 
+/* ── 옵션 : 사내 AI 팀 회의실 ─────────────────────────── */
+.addon-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 8px 18px; flex-wrap: wrap; margin: 30px 0 12px;
+  padding-top: 22px; border-top: 1px solid var(--line);
+}
+.addon-head .kicker { margin: 0; }
+.addon-head-note { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--sub); }
+.addon {
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.85fr);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-card); overflow: hidden;
+}
+.addon-main { padding: 24px; min-width: 0; }
+.addon-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.addon-flag {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
+  padding: 4px 8px; border-radius: var(--r-tag);
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--body);
+}
+.addon h3 { margin: 0 0 8px; font-size: 21px; letter-spacing: -0.03em; }
+.addon-lead { margin: 0 0 18px; font-size: 13.5px; line-height: 1.75; color: var(--body); max-width: 60ch; }
+.addon-list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 20px; margin: 0;
+}
+.addon-list li { position: relative; padding-left: 19px; font-size: 13px; line-height: 1.6; color: var(--body); }
+.addon-list li::before {
+  content: '✓'; position: absolute; left: 0; top: 0;
+  font-size: 11px; font-weight: 800; color: var(--accent); line-height: 1.9;
+}
+.addon-list strong { color: var(--ink); font-weight: 700; }
+.addon-buy {
+  display: flex; flex-direction: column; min-width: 0;
+  padding: 24px 22px; border-left: 1px solid var(--accent-line); background: var(--accent-soft);
+}
+.addon-price { display: flex; align-items: baseline; gap: 5px; margin: 0 0 4px; }
+.addon-price span { font-size: 12px; color: #3C4794; }
+.addon-price strong {
+  font-size: 30px; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.045em; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.addon-price-sub { margin: 0 0 14px; font-size: 12px; line-height: 1.6; color: #3C4794; }
+.addon-price-sub strong { color: var(--ink); }
+.addon-buy-list { display: flex; flex-direction: column; gap: 6px; margin: 0 0 16px; }
+.addon-buy-list li { position: relative; padding-left: 14px; font-size: 12.5px; line-height: 1.55; color: #3C4794; }
+.addon-buy-list li::before { content: '·'; position: absolute; left: 4px; top: 0; font-weight: 800; }
+.addon-cta { width: 100%; margin-top: auto; }
+.addon-note { margin: 10px 0 0; font-size: 11.5px; line-height: 1.6; color: #3C4794; }
+.addon-note strong { color: var(--ink); }
+
 /* ── 신청 ─────────────────────────────────────────────── */
 .section-apply {
   display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
@@ -722,6 +773,9 @@ input::placeholder, textarea::placeholder { color: var(--sub); opacity: 1; }
   .steps { grid-template-columns: minmax(0, 1fr); }
   .plan-grid { grid-template-columns: minmax(0, 1fr); }
   .plan-recommended { order: -1; }
+  .addon { grid-template-columns: minmax(0, 1fr); }
+  .addon-buy { border-left: 0; border-top: 1px solid var(--accent-line); }
+  .addon-list { grid-template-columns: minmax(0, 1fr); }
   .section-apply { grid-template-columns: minmax(0, 1fr); }
   .footer-inner { grid-template-columns: minmax(0, 1fr); }
 }
@@ -770,6 +824,9 @@ input::placeholder, textarea::placeholder { color: var(--sub); opacity: 1; }
   .duty-card, .tool-card { padding: 18px; }
   .step { padding: 18px; }
   .plan { padding: 20px 18px; }
+  .addon-main, .addon-buy { padding: 20px 16px; }
+  .addon h3 { font-size: 18.5px; }
+  .addon-price strong { font-size: 26px; }
   .apply-form { padding: 20px 16px; }
   .faq-item { padding: 0 15px; }
   .faq-item summary { font-size: 14px; }
