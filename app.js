@@ -8,6 +8,8 @@
 
   var C = window.BackofficeCore;
   if (!C) return;
+  var F = window.BackofficeForm || null;   // engines/form-engine.js (validator.js)
+  if (F && C.useValidator) C.useValidator(F);
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -122,6 +124,7 @@
   var sampleList = $('sample-list');
   var storeInput = $('f-store');
   var introInput = $('f-intro');
+  var contactInput = $('f-contact');
   var consentInput = $('f-consent');
   var resultBox = $('inquiry-result');
   var resultText = $('inquiry-text');
@@ -174,6 +177,7 @@
     storeName: { input: storeInput, box: 'err-store' },
     samples: { input: null, box: 'err-samples' },
     intro: { input: introInput, box: 'err-intro' },
+    contact: { input: contactInput, box: 'err-contact' },
     consent: { input: consentInput, box: 'err-consent' }
   };
 
@@ -208,6 +212,7 @@
       storeName: storeInput ? storeInput.value : '',
       samples: picked,
       intro: introInput ? introInput.value : '',
+      contact: contactInput ? contactInput.value : '',
       consent: !!(consentInput && consentInput.checked)
     };
   }
@@ -247,11 +252,20 @@
     });
 
     /* 입력을 고치면 그 칸의 오류만 지운다 */
-    [industrySelect, storeInput, introInput, consentInput].forEach(function (el) {
+    [industrySelect, storeInput, introInput, contactInput, consentInput].forEach(function (el) {
       if (!el) return;
       el.addEventListener('input', function () { clearFieldError(el); });
       el.addEventListener('change', function () { clearFieldError(el); });
     });
+    /* 연락처는 칸을 벗어날 때 보기 좋은 형식으로 정리한다(01012345678 → 010-1234-5678). */
+    if (contactInput && F) {
+      contactInput.addEventListener('blur', function () {
+        var v = String(contactInput.value || '').trim();
+        if (!v) return;
+        var res = F.validateContact(v);
+        if (res.ok && res.value && res.value !== v) contactInput.value = res.value;
+      });
+    }
     if (sampleList) {
       sampleList.addEventListener('change', function () {
         var box = $('err-samples');
@@ -266,6 +280,7 @@
     if (id === 'f-industry') key = 'industry';
     else if (id === 'f-store') key = 'storeName';
     else if (id === 'f-intro') key = 'intro';
+    else if (id === 'f-contact') key = 'contact';
     else if (id === 'f-consent') key = 'consent';
     if (!key) return;
     var t = ERROR_TARGETS[key];

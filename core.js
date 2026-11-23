@@ -272,14 +272,26 @@
   }
 
   /* ── 신청서 검증 ──────────────────────────────────────── */
-  var FIELD_ORDER = ['industry', 'storeName', 'samples', 'intro', 'consent'];
+  var FIELD_ORDER = ['industry', 'storeName', 'samples', 'intro', 'contact', 'consent'];
   var FIELD_LABEL = {
     industry: '업종',
     storeName: '가게 이름',
     samples: '받고 싶은 샘플',
     intro: '한 줄 소개',
+    contact: '연락처',
     consent: '개인정보 동의'
   };
+
+  /**
+   * 공용 폼 검증 엔진(engines/form-engine.js: validator.js).
+   * 페이지에서 window.BackofficeForm 을 넣으면 이메일·전화 정규화/검증을 그쪽에 맡긴다.
+   */
+  var FORM = null;
+  function useValidator(engine) {
+    FORM = engine && typeof engine.validateContact === 'function' ? engine : null;
+    return !!FORM;
+  }
+  function formEngine() { return FORM; }
 
   function normalizeText(v) {
     return String(v === null || v === undefined ? '' : v)
@@ -311,6 +323,31 @@
     var intro = normalizeText(input.intro);
     if (intro.length > 60) errors.intro = '한 줄 소개는 60자까지 적을 수 있습니다.';
 
+    // 연락처(선택) — 전화 또는 이메일. 형식이 틀리면 문안을 만들지 않는다.
+    var contact = '';
+    var contactKind = '';
+    var rawContact = normalizeText(input.contact);
+    if (rawContact) {
+      if (FORM) {
+        var cv = FORM.validateContact(rawContact);
+        if (!cv.ok) errors.contact = cv.message;
+        else { contact = cv.value; contactKind = cv.kind; }
+      } else {
+        var digits = rawContact.replace(/[^0-9]/g, '');
+        if (rawContact.indexOf('@') >= 0) {
+          if (/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(rawContact)) { contact = rawContact.toLowerCase(); contactKind = 'email'; }
+          else errors.contact = '이메일 형식을 확인해 주세요. 예: hello@example.com';
+        } else if (digits.length >= 9 && digits.length <= 11) {
+          contact = digits.indexOf('02') === 0
+            ? (digits.length === 9 ? '02-' + digits.slice(2, 5) + '-' + digits.slice(5) : '02-' + digits.slice(2, 6) + '-' + digits.slice(6))
+            : digits.slice(0, 3) + '-' + digits.slice(3, digits.length - 4) + '-' + digits.slice(-4);
+          contactKind = 'phone';
+        } else if (digits.length > 0) {
+          errors.contact = '전화번호나 이메일을 적어 주세요. 전화는 010-1234-5678처럼 숫자 9~11자리입니다.';
+        }
+      }
+    }
+
     if (input.consent !== true) errors.consent = '개인정보 수집·이용 동의에 체크해 주세요.';
 
     var firstError = null;
@@ -327,6 +364,8 @@
         storeName: storeName,
         samples: samples,
         intro: intro,
+        contact: contact,
+        contactKind: contactKind,
         consent: input.consent === true
       }
     };
@@ -348,6 +387,7 @@
       '· 원하는 샘플: ' + labels.join(' / ')
     ];
     if (v.intro) lines.push('· 한 줄 소개: ' + v.intro);
+    if (v.contact) lines.push('· 연락처: ' + v.contact);
     lines.push('');
     lines.push('샘플 먼저 보고 정하겠습니다. 감사합니다.');
 
@@ -380,6 +420,8 @@
     employeeTotal: employeeTotal,
     comparison: comparison,
     validateApplication: validateApplication,
+    useValidator: useValidator,
+    formEngine: formEngine,
     buildInquiry: buildInquiry,
     normalizeText: normalizeText,
     looksLikePhone: looksLikePhone,

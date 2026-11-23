@@ -589,6 +589,13 @@
         <p class="err" id="err-intro" role="alert" hidden></p>
       </div>
 
+      <div class="field">
+        <label class="field-label" for="f-contact">연락처 <em>선택</em></label>
+        <input id="f-contact" name="contact" type="text" inputmode="text" autocomplete="tel" placeholder="전화번호 또는 이메일" aria-describedby="hint-contact err-contact" />
+        <p class="hint" id="hint-contact">샘플 발송 안내에만 씁니다. 전화·이메일 중 편한 것 하나만. 숫자만 붙여 써도 자동으로 정리합니다.</p>
+        <p class="err" id="err-contact" role="alert" hidden></p>
+      </div>
+
       <div class="field field-consent">
         <label class="check-line" for="f-consent">
           <input id="f-consent" name="consent" type="checkbox" aria-describedby="err-consent" />
@@ -676,6 +683,8 @@
 
 <div class="toast-root" id="toast-root" aria-live="polite" aria-atomic="true"></div>
 
+<script src="assets/vendor/validator.min.js"></script>
+<script src="engines/form-engine.js"></script>
 <script src="core.js"></script>
 <script src="app.js"></script>
 </body>
